@@ -6,6 +6,8 @@ import {useTranslation} from "react-i18next";
 import LoginService from "../../service/LoginService";
 import '../../service/LoginService'
 import {useHistory} from "react-router-dom";
+import LoadingPage from "../visitor/layout/LoadingPage";
+import DashboardLoading from "./layout/DashboardLoading";
 
 const layout = {
     labelCol: { span: 7 },
@@ -27,15 +29,20 @@ const Login = props => {
         document.title = `${t('login')} | ${global.final.appName}`
     }, [props.title, t])
 
-
+    if (appState.loggedIn) {
+        history.push(global.final.dashboardPath);
+        return (<LoadingPage />)
+    }
 
     const onFinish = values => {
         const service  = new LoginService()
         service.getLoginAuthentication(values).then(data => {
             if (data.status === 'ok'){
                 appDispatch({ type: "login", data: data })
+            } else if (data.status === 'not_find'){
+                setWarning(getWarning(t('invalid_login_credentials')))
             } else {
-                setWarning(getWarning(t('not_match')))
+                setWarning(getWarning(t('we_have_some_problems')))
             }
         }).catch(e => {
             setWarning(getWarning(t('server_not_working')))
@@ -62,7 +69,7 @@ const Login = props => {
     return (
         <div className="container-login100">
             <div className="wrap-login100">
-                <h1 style={{textAlign:"center", paddingBottom:10}}>Login</h1>
+                <h1 style={{textAlign:"center", paddingBottom:10}}>{t('login')}</h1>
                 {warning}
                 <Form
                     {...layout}

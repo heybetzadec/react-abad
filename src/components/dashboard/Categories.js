@@ -3,6 +3,9 @@ import {Table, Tag, Space, PageHeader, Button} from 'antd';
 import DashboardPage from "./layout/DashboardPage";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import {
+    PlusOutlined
+} from '@ant-design/icons';
 
 const Categories = (props) => {
     const {t} = useTranslation();
@@ -91,11 +94,12 @@ const Categories = (props) => {
             <PageHeader
                 title={t('categories')}
                 extra={[
-                    <Button key="1" type="primary">
-                        <Link to={global.final.dashboardPath+'/category/add'}>
-                            {t('add_category')}
-                        </Link>
-                    </Button>,
+                    <Link to={global.final.dashboardPath+'/category/add'}>
+                        <Button type="primary" size="large" shape="circle" icon={<PlusOutlined />} >
+
+                        </Button>
+                    </Link>
+
                 ]}
             />
             <Table

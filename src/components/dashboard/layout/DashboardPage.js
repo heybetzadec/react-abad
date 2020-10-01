@@ -12,6 +12,8 @@ import LeftMenu from "./LeftMenu";
 import PageBreadcrumb from "./PageBreadcrumb";
 import StateContext from "../../../util/context/StateContext";
 import DispatchContext from "../../../util/context/DispatchContext";
+import LoadingPage from "../../visitor/layout/LoadingPage";
+import DashboardLoading from "./DashboardLoading";
 
 
 const { Header, Content } = Layout;
@@ -30,13 +32,17 @@ const DashboardPage = (props) => {
 
     const [collapsed, setCollapsed] = useState(false)
 
+    // console.log(Boolean(localStorage.getItem("dashboardMenuIsOpen")))
     const toggle = () => {
         setCollapsed(toogle => !toogle)
+        // localStorage.setItem("dashboardMenuIsOpen", !collapsed)
+        // console.log(Boolean(localStorage.getItem("dashboardMenuIsOpen")))
     };
 
+
     if (!appState.loggedIn) {
-        history.push('login');
-        return (<></>)
+        history.replace(`${global.final.dashboardPath}/login`);
+        return (<LoadingPage />)
     }
 
     const logOut = () => {
@@ -57,7 +63,7 @@ const DashboardPage = (props) => {
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item>
-                <Button type="link" size="small" onClick={logOut()}>
+                <Button type="link" size="small" onClick={()=>{logOut()}}>
                     Logout
                 </Button>
             </Menu.Item>

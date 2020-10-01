@@ -1,38 +1,107 @@
-.App {
-  text-align: center;
+body html{
+  display: contents;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.ant-spin-dot{
+  position: fixed; /* or absolute */
+  top: 45%;
 }
 
-.App-header {
-  background-color: #282c34;
+.ant-spin-spinning {
+  width: 100%;
+  height: 100%;
+}
+
+.container-login100 {
+  width: 100%;
   min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  padding: 15px;
+  background: #f2f2f2;
 }
 
-.App-link {
-  color: #61dafb;
+.wrap-login100 {
+  width: 470px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 26px;
+  /*padding: 77px 55px 33px 55px;*/
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.dashboard-container{
+  height: 100%;
+}
+.float-right{
+  float: right;
+}
+
+.right-margin-25{
+  margin-right: 25px;
+}
+
+.ant-layout-header .ant-avatar{
+  cursor: pointer;
+}
+
+.form_button_group{
+  margin-top: 50px;
+}
+
+.form_button_group .ant-space {
+  float: right;
+}
+.login-container{
+  max-width: 500px;
+  margin: auto;
+}
+
+#components-layout-demo-custom-trigger .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+.ant-layout-sider-children .logo {
+  margin: 14px;
+  height: 36px;
+  background-image: url("image/Shape.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.ant-layout-header .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
 }

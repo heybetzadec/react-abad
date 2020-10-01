@@ -1,8 +1,9 @@
 import React from 'react';
+import {Spin} from "antd";
 
 const LoadingPage = () => (
     <>
-        <h2>LoadingPage</h2>
+        <Spin size="large" />
     </>
 );
 

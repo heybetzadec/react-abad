@@ -1,3 +1,22 @@
 {
-  "dashboard": "Dashboard"
+  "home": "Home",
+  "dashboard": "Panel",
+  "login": "Login",
+  "mail": "Mail",
+  "password": "Password",
+  "invalid_login_credentials": "Invalid login credentials.",
+  "server_not_working" : "Server not working!",
+  "we_have_some_problems": "We have some problems!",
+  "input_email": "Please input your email!",
+  "input_password": "Please input your password!",
+  "categories": "Categories",
+  "edit_category": "Edit category",
+  "posts": "Posts",
+  "edit_post": "Edit post",
+  "slider": "Slider",
+  "edit_slider": "Edit slider",
+  "roles": "Roles",
+  "settings": "Settings",
+  "remember_me": "Remember me",
+  "not_match": "Mail or password password does not match."
 }

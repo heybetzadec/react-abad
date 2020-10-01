@@ -6,7 +6,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <h2>{t('Welcome to React')}</h2>
+            <h2>{t('home')}</h2>
         </div>
     )
 }

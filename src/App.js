@@ -1,8 +1,8 @@
 import React, {Suspense, lazy, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'antd/dist/antd.css';
 
-import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import { useImmerReducer } from "use-immer"
 import i18n from "i18next";
@@ -15,8 +15,9 @@ import translationTR from './util/locales/tr/translation.json';
 import StateContext from "./util/context/StateContext";
 import DispatchContext from "./util/context/DispatchContext";
 
-
 import LoadingPage from "./components/visitor/layout/LoadingPage";
+import NotFound from "./components/visitor/layout/NotFound";
+import DashboardLoading from "./components/dashboard/layout/DashboardLoading";
 const HomePage = lazy(() => import('./components/visitor/layout/HomePage'));
 const Dashboard = lazy(() => import( './components/dashboard/Dashboard'));
 const Login = lazy(() => import( './components/dashboard/Login'));
@@ -31,7 +32,6 @@ const UserDetails = lazy(() => import( './components/dashboard/UserDetails'));
 const Roles = lazy(() => import( './components/dashboard/Roles'));
 const RoleDetail = lazy(() => import( './components/dashboard/RoleDetail'));
 const Setting = lazy(() => import( './components/dashboard/Setting'));
-const DashboardLoading = lazy(() => import( './components/dashboard/layout/DashboardLoading'));
 
 
 i18n
@@ -67,7 +67,7 @@ function App() {
       name: localStorage.getItem("appUserName"),
       logo: localStorage.getItem("appUserLogo")
     },
-    loggedIn: Boolean(localStorage.getItem("appLoggedIn")),
+    loggedIn: Boolean(localStorage.getItem("appLoggedIn"))
   }
 
   function ourReducer(draft, action) {
@@ -75,7 +75,6 @@ function App() {
       case "login":
         draft.loggedIn = true
         draft.user = action.data
-        window.history.back();
         return
       case "logout":
         draft.loggedIn = false
@@ -85,10 +84,6 @@ function App() {
           name: '',
           logo: ''
         }
-        return
-      case "changeTheme":
-        draft.theme = draft.theme === 'light' ? 'dark' : 'light'
-        console.log(draft.theme)
         return
       default:
     }
@@ -109,23 +104,22 @@ function App() {
       localStorage.removeItem("appUserName")
       localStorage.removeItem("appUserLogo")
       localStorage.removeItem("appLoggedIn")
-      // return  <Redirect to={global.final.dashboardPath}  />
     }
-  }, [state.loggedIn, state.user.email, state.user.name, state.user.logo, state.user.token])
-
+  }, [state.loggedIn])
+      // , state.user.email, state.user.name, state.user.logo, state.user.token
 
 
   return (
       <StateContext.Provider value={state}>
         <DispatchContext.Provider value={dispatch}>
           <Router>
-            <Suspense fallback={<LoadingPage />}>
+            <Suspense fallback={window.location.href.includes(global.final.dashboardPath) ? <DashboardLoading /> : <LoadingPage/> }>
               <Switch>
                 <Route exact path="/" component={HomePage}/>
                 <Route path={global.final.dashboardPath} exact>
                   <Dashboard title={t('dashboard')} menuKey={'1'}/>
                 </Route>
-                <Route path={'/login'} exact>
+                <Route path={`${global.final.dashboardPath}/login`} exact>
                   <Login title={t('login')} menuKey={'1'}/>
                 </Route>
                 <Route path={global.final.dashboardPath+'/categories'}>
@@ -179,6 +173,7 @@ function App() {
                 <Route path={global.final.dashboardPath + '/*'}>
                   <DashboardLoading title={'...'}/>
                 </Route>
+                <Route component={NotFound} />
               </Switch>
             </Suspense>
           </Router>

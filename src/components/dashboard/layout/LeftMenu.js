@@ -16,7 +16,6 @@ const { Sider } = Layout;
 
 const LeftMenu = props => {
 
-
     return (
         <>
             <Sider trigger={null} collapsible collapsed={props.collapsed}>
