@@ -73,6 +73,9 @@ body html{
   max-width: 500px;
   margin: auto;
 }
+.dashboard-card{
+  margin-top: 20px!important;
+}
 
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;

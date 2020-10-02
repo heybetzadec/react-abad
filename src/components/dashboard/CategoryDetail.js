@@ -16,8 +16,8 @@ const tailLayout = {
 
 const CategoryDetail = props => {
     const {t} = useTranslation();
-
     const [form] = Form.useForm();
+
 
     const onGenderChange = value => {
         // eslint-disable-next-line default-case
@@ -39,15 +39,16 @@ const CategoryDetail = props => {
         form.resetFields();
     };
 
+    const breadcrumbItems = {items: [
+            {key: 1, name: t('dashboard'), link: global.final.dashboardPath},
+            {key: 1, name: t('categories'), link: global.final.dashboardPath+'/categories'},
+            {key: 2, name: props.title},
+        ]}
 
     return (
-        <DashboardPage title={props.title} menuKey={props.menuKey}>
-            <PageHeader
-                title={t('add_category')}
-                onBack={() => window.history.back()}
-            />
+        <DashboardPage title={props.title} menuKey={props.menuKey} breadcrumbItems={breadcrumbItems}>
 
-            <Card >
+            <Card className="dashboard-card" title={props.title}>
                 <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
                     <Form.Item name="note" label="Note" rules={[{ required: true }]}>
                         <Input />

@@ -14,6 +14,7 @@ import StateContext from "../../../util/context/StateContext";
 import DispatchContext from "../../../util/context/DispatchContext";
 import LoadingPage from "../../visitor/layout/LoadingPage";
 import DashboardLoading from "./DashboardLoading";
+import HeaderLayout from "./HeaderLayout";
 
 
 const { Header, Content } = Layout;
@@ -22,21 +23,25 @@ const DashboardPage = (props) => {
 
     const appState = useContext(StateContext)
     const appDispatch = useContext(DispatchContext)
-
     const history = useHistory();
+
+    let defaultCollapsed = localStorage.getItem("dashboardMenuIsOpen");
+
+    if (defaultCollapsed === null) {
+        defaultCollapsed = 'false'
+        localStorage.setItem("dashboardMenuIsOpen", defaultCollapsed)
+    }
 
     useEffect(() => {
         document.title = `${props.title} | ${global.final.appName}`
     }, [props.title])
 
 
-    const [collapsed, setCollapsed] = useState(false)
+    const [collapsed, setCollapsed] = useState(defaultCollapsed==='true')
 
-    // console.log(Boolean(localStorage.getItem("dashboardMenuIsOpen")))
     const toggle = () => {
         setCollapsed(toogle => !toogle)
-        // localStorage.setItem("dashboardMenuIsOpen", !collapsed)
-        // console.log(Boolean(localStorage.getItem("dashboardMenuIsOpen")))
+        localStorage.setItem("dashboardMenuIsOpen", (!collapsed).toString())
     };
 
 
@@ -45,50 +50,15 @@ const DashboardPage = (props) => {
         return (<LoadingPage />)
     }
 
-    const logOut = () => {
-        appDispatch({ type: "logout" })
-    }
-
-    const menu = (
-        <Menu>
-            <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-                    Profile
-                </a>
-            </Menu.Item>
-            <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-                    Setting
-                </a>
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item>
-                <Button type="link" size="small" onClick={()=>{logOut()}}>
-                    Logout
-                </Button>
-            </Menu.Item>
-        </Menu>
-    );
 
     return (
         <>
             <Layout className="dashboard-container">
                 <LeftMenu collapsed={collapsed} menuKey={props.menuKey}/>
                 <Layout className="site-layout">
-                    <Header className="site-layout-background" style={{ padding: 0 }}>
-                        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                            className: 'trigger',
-                            onClick: toggle,
-                        })}
 
-                        <Space className="float-right right-margin-25">
-                            <Avatar size={40} icon={<SearchOutlined />} />
-                            <Dropdown overlay={menu} placement="bottomRight" trigger={["click"]} arrow>
-                                <Avatar size={40} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                            </Dropdown>
-                        </Space>
+                    <HeaderLayout collapsed={collapsed} toggle={toggle} appDispatch={appDispatch}/>
 
-                    </Header>
                     <Content
                         className="site-layout-background"
                         style={{

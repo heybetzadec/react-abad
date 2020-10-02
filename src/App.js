@@ -119,7 +119,7 @@ function App() {
                 <Route path={global.final.dashboardPath} exact>
                   <Dashboard title={t('dashboard')} menuKey={'1'}/>
                 </Route>
-                <Route path={`${global.final.dashboardPath}/login`} exact>
+                <Route path={`${global.final.dashboardPath}/login`} >
                   <Login title={t('login')} menuKey={'1'}/>
                 </Route>
                 <Route path={global.final.dashboardPath+'/categories'}>

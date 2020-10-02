@@ -1,10 +1,17 @@
 import React from 'react';
 import {MenuFoldOutlined, MenuUnfoldOutlined, SearchOutlined} from "@ant-design/icons";
-import {Avatar, Dropdown, Layout, Menu, Space} from "antd";
+import {Avatar, Button, Dropdown, Layout, Menu, Space} from "antd";
 
 const { Header } = Layout;
 
+
+
 const HeaderLayout = props => {
+
+    const logOut = () => {
+        props.appDispatch({ type: "logout" })
+    }
+
     const menu = (
         <Menu>
             <Menu.Item>
@@ -19,9 +26,9 @@ const HeaderLayout = props => {
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
+                <Button type="link" size="small" onClick={()=>{logOut()}}>
                     Logout
-                </a>
+                </Button>
             </Menu.Item>
         </Menu>
     );
@@ -40,7 +47,6 @@ const HeaderLayout = props => {
                         <Avatar size={40} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                     </Dropdown>
                 </Space>
-
             </Header>
         </>
     )

@@ -42,6 +42,7 @@ const Login = props => {
             } else if (data.status === 'not_find'){
                 setWarning(getWarning(t('invalid_login_credentials')))
             } else {
+                console.log(data.message)
                 setWarning(getWarning(t('we_have_some_problems')))
             }
         }).catch(e => {

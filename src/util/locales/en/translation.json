@@ -9,14 +9,20 @@
   "we_have_some_problems": "We have some problems!",
   "input_email": "Please input your email!",
   "input_password": "Please input your password!",
+  "users": "Users",
+  "add_user": "Add user",
+  "edit_user": "Edit user",
   "categories": "Categories",
+  "add_category": "Add category",
   "edit_category": "Edit category",
   "posts": "Posts",
+  "add_post": "Add new post",
   "edit_post": "Edit post",
   "slider": "Slider",
+  "add_slider": "Add new slider",
   "edit_slider": "Edit slider",
   "roles": "Roles",
   "settings": "Settings",
   "remember_me": "Remember me",
-  "not_match": "Mail or password password does not match."
+  "not_match": "Mail or password does not match."
 }
