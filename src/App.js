@@ -1,4 +1,5 @@
 import React, {Suspense, lazy, useEffect} from 'react';
+import { useCookies } from 'react-cookie';
 import './App.css';
 import 'antd/dist/antd.css';
 
@@ -18,6 +19,8 @@ import DispatchContext from "./util/context/DispatchContext";
 import LoadingPage from "./components/visitor/layout/LoadingPage";
 import NotFound from "./components/visitor/layout/NotFound";
 import DashboardLoading from "./components/dashboard/layout/DashboardLoading";
+import {CookiesProvider} from "react-cookie";
+import LoginService from "./service/LoginService";
 const HomePage = lazy(() => import('./components/visitor/layout/HomePage'));
 const Dashboard = lazy(() => import( './components/dashboard/Dashboard'));
 const Login = lazy(() => import( './components/dashboard/Login'));
@@ -58,6 +61,7 @@ i18n
 function App() {
 
   const {t} = useTranslation();
+  const [cookies, setCookie] = useCookies(['email']);
 
   const initialState = {
     theme: 'light',
@@ -108,11 +112,37 @@ function App() {
   }, [state.loggedIn])
       // , state.user.email, state.user.name, state.user.logo, state.user.token
 
+// Check if token has expired or not on first render
+  useEffect(() => {
+    if (state.loggedIn) {
+      const service  = new LoginService()
+      service.checkToken(state.user.token).then(data => {
+        if (data.status !== 'ok'){
+          // If token has expired check cookie for login.
+          if (cookies.email!==undefined && cookies.password!==undefined) {
+            service.getLoginAuthentication({email:cookies.email, password:cookies.password}).then(data => {
+              if (data.status === 'ok'){
+                dispatch({ type: "login", data: data })
+              }
+            }).catch(e => {
+              console.log(e)
+            });
+          } else {
+            dispatch({ type: "logout" })
+          }
+        }
+      }).catch(e => {
+        console.log(e)
+      });
+    }
+
+  },[])
 
   return (
       <StateContext.Provider value={state}>
         <DispatchContext.Provider value={dispatch}>
-          <Router>
+          <CookiesProvider>
+            <Router>
             <Suspense fallback={window.location.href.includes(global.final.dashboardPath) ? <DashboardLoading /> : <LoadingPage/> }>
               <Switch>
                 <Route exact path="/" component={HomePage}/>
@@ -177,6 +207,7 @@ function App() {
               </Switch>
             </Suspense>
           </Router>
+          </CookiesProvider>
         </DispatchContext.Provider>
       </StateContext.Provider>
   );

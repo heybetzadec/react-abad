@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {
     PlusOutlined
 } from '@ant-design/icons';
+import CategoryService from "../../service/CategoryService";
 
 const Categories = (props) => {
     const {t} = useTranslation();
@@ -19,33 +20,18 @@ const Categories = (props) => {
             render: text => text,
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Slug',
+            dataIndex: 'slug',
+            key: 'slug',
         },
         {
             title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: tags => (
-                <span>
-        {tags.map(tag => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-                color = 'volcano';
-            }
-            return (
-                <Tag color={color} key={tag}>
-                    {tag.toUpperCase()}
+            key: 'is_publish',
+            dataIndex: 'is_publish',
+            render: is_publish => (
+                <Tag color={is_publish === 1 ? 'green' : 'volcano'} key={is_publish}>
+                    {is_publish}
                 </Tag>
-            );
-        })}
-      </span>
             ),
         },
         {
@@ -64,25 +50,31 @@ const Categories = (props) => {
         {
             key: '1',
             name: 'John Brown',
-            age: 32,
+            slug: 'John_brown',
             address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
+            is_publish: 0,
         },
         {
             key: '2',
             name: 'Jim Green',
-            age: 42,
+            slug: 'Jim_Green',
             address: 'London No. 1 Lake Park',
-            tags: ['loser'],
+            is_publish: 1,
         },
         {
             key: '3',
             name: 'Joe Black',
-            age: 32,
+            slug: 'joe_black',
             address: 'Sidney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
+            is_publish: 1,
         },
     ];
+
+    const service = new CategoryService()
+
+    service.getAllCategories('az').then(data => {
+        console.log(data)
+    })
 
     const breadcrumbItems = {items: [
             {key: 1, name: t('dashboard'), link: global.final.dashboardPath},
@@ -94,7 +86,7 @@ const Categories = (props) => {
             <PageHeader
                 title={t('categories')}
                 extra={[
-                    <Link to={global.final.dashboardPath+'/category/add'}>
+                    <Link key='categoryAdd' to={global.final.dashboardPath+'/category/add'}>
                         <Button type="primary" size="large" shape="circle" icon={<PlusOutlined />} >
 
                         </Button>

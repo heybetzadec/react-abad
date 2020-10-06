@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
+import { useCookies } from 'react-cookie';
 import StateContext from "../../util/context/StateContext";
 import DispatchContext from "../../util/context/DispatchContext";
 import {Alert, Button, Checkbox, Form, Input} from "antd";
@@ -20,10 +21,10 @@ const tailLayout = {
 const Login = props => {
     const appState = useContext(StateContext)
     const appDispatch = useContext(DispatchContext)
-    const [warning, setWarning] = useState(<></>)
     const {t} = useTranslation();
     const history = useHistory();
-
+    const [warning, setWarning] = useState(<></>)
+    const [cookies, setCookie] = useCookies(['email']);
 
     useEffect(() => {
         document.title = `${t('login')} | ${global.final.appName}`
@@ -38,6 +39,10 @@ const Login = props => {
         const service  = new LoginService()
         service.getLoginAuthentication(values).then(data => {
             if (data.status === 'ok'){
+                if (values.remember === true){
+                    setCookie('email', values.email, { path: '/' });
+                    setCookie('password', values.password, { path: '/' });
+                }
                 appDispatch({ type: "login", data: data })
             } else if (data.status === 'not_find'){
                 setWarning(getWarning(t('invalid_login_credentials')))
@@ -47,6 +52,7 @@ const Login = props => {
             }
         }).catch(e => {
             setWarning(getWarning(t('server_not_working')))
+            console.log(e)
         });
     };
 

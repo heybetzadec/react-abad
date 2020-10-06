@@ -2,22 +2,16 @@ import React, {useContext, useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import '../../../util/config/variable'
 import '../../../App.css'
-import {Avatar, Button, Dropdown, Layout, Menu, Space} from 'antd';
-import {
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-    SearchOutlined
-} from '@ant-design/icons';
+import { Layout} from 'antd';
 import LeftMenu from "./LeftMenu";
 import PageBreadcrumb from "./PageBreadcrumb";
 import StateContext from "../../../util/context/StateContext";
 import DispatchContext from "../../../util/context/DispatchContext";
 import LoadingPage from "../../visitor/layout/LoadingPage";
-import DashboardLoading from "./DashboardLoading";
 import HeaderLayout from "./HeaderLayout";
 
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 const DashboardPage = (props) => {
 
@@ -49,7 +43,6 @@ const DashboardPage = (props) => {
         history.replace(`${global.final.dashboardPath}/login`);
         return (<LoadingPage />)
     }
-
 
     return (
         <>
