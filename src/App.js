@@ -61,6 +61,7 @@ i18n
 function App() {
 
   const {t} = useTranslation();
+  // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['email']);
 
   const initialState = {
@@ -109,33 +110,36 @@ function App() {
       localStorage.removeItem("appUserLogo")
       localStorage.removeItem("appLoggedIn")
     }
-  }, [state.loggedIn])
-      // , state.user.email, state.user.name, state.user.logo, state.user.token
+  }, [state.loggedIn , state.user.email, state.user.name, state.user.logo, state.user.token])
+
 
 // Check if token has expired or not on first render
   useEffect(() => {
-    if (state.loggedIn) {
-      const service  = new LoginService()
-      service.checkToken(state.user.token).then(data => {
-        if (data.status !== 'ok'){
-          // If token has expired check cookie for login.
-          if (cookies.email!==undefined && cookies.password!==undefined) {
-            service.getLoginAuthentication({email:cookies.email, password:cookies.password}).then(data => {
-              if (data.status === 'ok'){
-                dispatch({ type: "login", data: data })
-              }
-            }).catch(e => {
-              console.log(e)
-            });
-          } else {
-            dispatch({ type: "logout" })
+    let isMounted = true;
+    if (isMounted) {
+      if (state.loggedIn) {
+        const service  = new LoginService()
+        service.checkToken(state.user.token).then(data => {
+          if (data.status !== 'ok'){
+            // If token has expired check cookie for login.
+            if (cookies.email!==undefined && cookies.password!==undefined) {
+              service.getLoginAuthentication({email:cookies.email, password:cookies.password}).then(data => {
+                if (data.status === 'ok'){
+                  dispatch({ type: "login", data: data })
+                }
+              }).catch(e => {
+                console.log(e)
+              });
+            } else {
+              dispatch({ type: "logout" })
+            }
           }
-        }
-      }).catch(e => {
-        console.log(e)
-      });
+        }).catch(e => {
+          console.log(e)
+        });
+      }
     }
-
+    return () => { isMounted = false };
   },[])
 
   return (

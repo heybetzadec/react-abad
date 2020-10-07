@@ -24,5 +24,7 @@
   "roles": "Roles",
   "settings": "Settings",
   "remember_me": "Remember me",
-  "not_match": "Mail or password does not match."
+  "not_match": "Mail or password does not match.",
+  "publish": "Publish",
+  "pending": "Pending"
 }

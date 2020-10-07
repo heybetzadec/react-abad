@@ -8,7 +8,6 @@ import LoginService from "../../service/LoginService";
 import '../../service/LoginService'
 import {useHistory} from "react-router-dom";
 import LoadingPage from "../visitor/layout/LoadingPage";
-import DashboardLoading from "./layout/DashboardLoading";
 
 const layout = {
     labelCol: { span: 7 },
@@ -24,6 +23,7 @@ const Login = props => {
     const {t} = useTranslation();
     const history = useHistory();
     const [warning, setWarning] = useState(<></>)
+    // eslint-disable-next-line no-unused-vars
     const [cookies, setCookie] = useCookies(['email']);
 
     useEffect(() => {
@@ -38,18 +38,22 @@ const Login = props => {
     const onFinish = values => {
         const service  = new LoginService()
         service.getLoginAuthentication(values).then(data => {
-            if (data.status === 'ok'){
-                if (values.remember === true){
-                    setCookie('email', values.email, { path: '/' });
-                    setCookie('password', values.password, { path: '/' });
+            let isMounted = true;
+            if (isMounted) {
+                if (data.status === 'ok'){
+                    if (values.remember === true){
+                        setCookie('email', values.email, { path: '/' });
+                        setCookie('password', values.password, { path: '/' });
+                    }
+                    appDispatch({ type: "login", data: data })
+                } else if (data.status === 'not_find'){
+                    setWarning(getWarning(t('invalid_login_credentials')))
+                } else {
+                    console.log(data.message)
+                    setWarning(getWarning(t('we_have_some_problems')))
                 }
-                appDispatch({ type: "login", data: data })
-            } else if (data.status === 'not_find'){
-                setWarning(getWarning(t('invalid_login_credentials')))
-            } else {
-                console.log(data.message)
-                setWarning(getWarning(t('we_have_some_problems')))
             }
+            return () => { isMounted = false };
         }).catch(e => {
             setWarning(getWarning(t('server_not_working')))
             console.log(e)

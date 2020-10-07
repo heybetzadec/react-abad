@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Table, Tag, Space, PageHeader, Button} from 'antd';
 import DashboardPage from "./layout/DashboardPage";
 import {Link} from "react-router-dom";
@@ -7,9 +7,22 @@ import {
     PlusOutlined
 } from '@ant-design/icons';
 import CategoryService from "../../service/CategoryService";
+import LoadingTable from "./layout/LoadingTable";
 
 const Categories = (props) => {
     const {t} = useTranslation();
+    const [data, setData] = useState([])
+    const service = new CategoryService()
+
+    useEffect(()=>{
+        let isMounted = true;
+        if (isMounted) {
+            service.getAllCategories(5, 'az').then(response => {
+                setData(response.categories.data)
+            })
+        }
+        return () => { isMounted = false };
+    },[])
 
     const columns = [
         {
@@ -21,16 +34,21 @@ const Categories = (props) => {
         },
         {
             title: 'Slug',
-            dataIndex: 'slug',
-            key: 'slug',
+            dataIndex: 'slug_name',
+            key: 'slug_name',
         },
         {
-            title: 'Tags',
+            title: 'Top category',
+            dataIndex: 'top_category_name',
+            key: 'top_category_name',
+        },
+        {
+            title: 'Publish',
             key: 'is_publish',
             dataIndex: 'is_publish',
             render: is_publish => (
                 <Tag color={is_publish === 1 ? 'green' : 'volcano'} key={is_publish}>
-                    {is_publish}
+                    {is_publish === 1 ? t('publish') : t('pending')}
                 </Tag>
             ),
         },
@@ -46,35 +64,7 @@ const Categories = (props) => {
         },
     ];
 
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            slug: 'John_brown',
-            address: 'New York No. 1 Lake Park',
-            is_publish: 0,
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            slug: 'Jim_Green',
-            address: 'London No. 1 Lake Park',
-            is_publish: 1,
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            slug: 'joe_black',
-            address: 'Sidney No. 1 Lake Park',
-            is_publish: 1,
-        },
-    ];
 
-    const service = new CategoryService()
-
-    service.getAllCategories('az').then(data => {
-        console.log(data)
-    })
 
     const breadcrumbItems = {items: [
             {key: 1, name: t('dashboard'), link: global.final.dashboardPath},
@@ -94,11 +84,14 @@ const Categories = (props) => {
 
                 ]}
             />
-            <Table
+            {data.length === 0 ? <LoadingTable/> :
+                <Table
                 columns={columns}
                 pagination={{ position: [ 'bottomRight'] }}
                 dataSource={data}
-            />
+                />
+            }
+
         </DashboardPage>
     )
 };
