@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
-import '../../../util/config/variable'
+import '../../../util/use/variable'
 import '../../../App.css'
 import { Layout} from 'antd';
 import LeftMenu from "./LeftMenu";

@@ -1,7 +1,7 @@
 import axios from 'axios'
-import '../util/config/variable'
+import '../util/use/variable'
 
-export default class LoginService {
+export default class CategoryService {
 
     getPaginationCategories(per, lang){
         let language = global.variable.languages.find(element => element.code === lang)

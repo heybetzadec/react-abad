@@ -1,5 +1,5 @@
 import axios from 'axios'
-import '../util/config/variable'
+import '../util/use/variable'
 
 export default class LoginService {
 

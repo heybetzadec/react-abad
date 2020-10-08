@@ -3,6 +3,11 @@ import DashboardPage from "./layout/DashboardPage";
 import {Button, Card, Input, Form, Select, Space} from "antd";
 import {useTranslation} from "react-i18next";
 import CategoryService from "../../service/CategoryService";
+import '../../util/use/Functions'
+import {Functions} from "../../util/use/Functions";
+import {
+    ThunderboltOutlined
+} from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -20,11 +25,12 @@ const CategoryDetail = props => {
     const [form] = Form.useForm();
     const service = new CategoryService()
     const [categoryOptions, setCategoryOptions] = useState([])
+    const [slugName, setSlugName] = useState("")
 
     useEffect(()=>{
         let isMounted = true;
         service.getAllTopCategories('en').then(response => {
-            setCategoryOptions(response.categories)
+            if (isMounted) setCategoryOptions(response.categories)
         }).catch(function (error) {
             console.log(error);
         });
@@ -47,16 +53,17 @@ const CategoryDetail = props => {
     const onFinish = values => {
         console.log(values);
     };
-
     const onReset = () => {
         form.resetFields();
     };
-
     const breadcrumbItems = {items: [
             {key: 1, name: t('dashboard'), link: global.variable.dashboardPath},
             {key: 1, name: t('categories'), link: global.variable.dashboardPath+'/categories'},
             {key: 2, name: props.title},
-        ]}
+    ]}
+    const addSlug = () => {
+        setSlugName(Functions.slug(document.getElementById("control-hooks_name").value))
+    }
 
     return (
         <DashboardPage title={props.title} menuKey={props.menuKey} breadcrumbItems={breadcrumbItems}>
@@ -65,6 +72,17 @@ const CategoryDetail = props => {
                 <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
                     <Form.Item name="name" label={t('name')} rules={[{ required: true }]}>
                         <Input />
+                    </Form.Item>
+                    <Form.Item name="slug" label={t('slug')} valuePropName="slug" rules={[{ required: true }]}>
+                        <Input
+                            value={slugName}
+                            onChange={e => setSlugName(e.target.value)}
+                            addonAfter={<Button
+                            style={{height:30}}
+                            type="link"
+                            icon={<ThunderboltOutlined />}
+                            onClick={addSlug}
+                        />}/>
                     </Form.Item>
                     <Form.Item name="category" label={t('category')} rules={[{ required: true }]}>
                         <Select

@@ -29,5 +29,6 @@
   "pending": "Pending",
   "name": "Name",
   "category": "Category",
-  "select_top_category": "Select a top category"
+  "select_top_category": "Select a top category",
+  "slug": "Slug"
 }

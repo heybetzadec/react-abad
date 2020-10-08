@@ -8,7 +8,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { useImmerReducer } from "use-immer"
 import i18n from "i18next";
 import {useTranslation, initReactI18next} from "react-i18next";
-import './util/config/variable'
+import './util/use/variable'
 
 import translationEN from './util/locales/en/translation.json';
 import translationTR from './util/locales/tr/translation.json';
