@@ -1,4 +1,4 @@
-module.exports = global.final = {
+module.exports = global.variable = {
     appName: 'ABAD',
     dashboardPath: '/dashboard',
     url: 'http://localhost:3000/',

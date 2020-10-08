@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Table, Tag, Space, PageHeader, Button} from 'antd';
+import {Table, Tag, Space, PageHeader, Button, Alert} from 'antd';
 import DashboardPage from "./layout/DashboardPage";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
@@ -12,16 +12,22 @@ import LoadingTable from "./layout/LoadingTable";
 const Categories = (props) => {
     const {t} = useTranslation();
     const [data, setData] = useState([])
+    const [dataIsLoad, setDataIsLoad] = useState('loading')
     const service = new CategoryService()
 
     useEffect(()=>{
         let isMounted = true;
-        if (isMounted) {
-            service.getAllCategories(5, 'az').then(response => {
+        service.getPaginationCategories(5, 'en').then(response => {
+            if (isMounted) {
                 setData(response.categories.data)
-            })
-        }
+                setDataIsLoad('loaded')
+            }
+        }).catch(function (error) {
+            console.log(error);
+            setDataIsLoad('error')
+        });
         return () => { isMounted = false };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const columns = [
@@ -67,30 +73,37 @@ const Categories = (props) => {
 
 
     const breadcrumbItems = {items: [
-            {key: 1, name: t('dashboard'), link: global.final.dashboardPath},
+            {key: 1, name: t('dashboard'), link: global.variable.dashboardPath},
             {key: 2, name: t('categories')},
-        ]}
+    ]}
+
+    function loadDataTable () {
+        if (dataIsLoad === 'loading') {
+            return <LoadingTable/>
+        } else if (dataIsLoad === 'loaded'){
+            return <Table
+                columns={columns}
+                pagination={{ position: [ 'bottomRight'] }}
+                dataSource={data}
+            />
+        } else {
+            return <Alert message={t('have_some_issues')} type="error" showIcon  />
+        }
+    }
+
 
     return (
         <DashboardPage title={props.title} menuKey={props.menuKey}  breadcrumbItems={breadcrumbItems}>
             <PageHeader
                 title={t('categories')}
                 extra={[
-                    <Link key='categoryAdd' to={global.final.dashboardPath+'/category/add'}>
-                        <Button type="primary" size="large" shape="circle" icon={<PlusOutlined />} >
-
-                        </Button>
+                    <Link key='categoryAdd' to={global.variable.dashboardPath+'/category/add'}>
+                        <Button type="primary" size="large" shape="circle" icon={<PlusOutlined />} />
                     </Link>
-
                 ]}
             />
-            {data.length === 0 ? <LoadingTable/> :
-                <Table
-                columns={columns}
-                pagination={{ position: [ 'bottomRight'] }}
-                dataSource={data}
-                />
-            }
+
+            {loadDataTable ()}
 
         </DashboardPage>
     )

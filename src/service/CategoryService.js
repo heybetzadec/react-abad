@@ -3,15 +3,14 @@ import '../util/config/variable'
 
 export default class LoginService {
 
-    getAllCategories(per, lang){
-        let language = global.final.languages.find(element => element.code === lang)
-        // let axiosConfig = {
-        //     headers: {
-        //         "Accept": "application/json",
-        //         "Content-Type": "application/json"
-        //     }
-        // };
-        return axios.get(`${global.final.api}category/per/${per}/lang/${language.id}`).then(res => res.data);
+    getPaginationCategories(per, lang){
+        let language = global.variable.languages.find(element => element.code === lang)
+        return axios.get(`${global.variable.api}category/per/${per}/lang/${language.id}`).then(res => res.data);
+    }
+
+    getAllTopCategories(lang){
+        let language = global.variable.languages.find(element => element.code === lang)
+        return axios.get(`${global.variable.api}category/top/all/lang/${language.id}`).then(res => res.data);
     }
 
 }

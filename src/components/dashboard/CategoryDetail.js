@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import DashboardPage from "./layout/DashboardPage";
 import {Button, Card, Input, Form, Select, Space} from "antd";
 import {useTranslation} from "react-i18next";
+import CategoryService from "../../service/CategoryService";
 
 const { Option } = Select;
 
@@ -17,7 +18,19 @@ const tailLayout = {
 const CategoryDetail = props => {
     const {t} = useTranslation();
     const [form] = Form.useForm();
+    const service = new CategoryService()
+    const [categoryOptions, setCategoryOptions] = useState([])
 
+    useEffect(()=>{
+        let isMounted = true;
+        service.getAllTopCategories('en').then(response => {
+            setCategoryOptions(response.categories)
+        }).catch(function (error) {
+            console.log(error);
+        });
+        return () => { isMounted = false };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
     const onGenderChange = value => {
         // eslint-disable-next-line default-case
@@ -40,8 +53,8 @@ const CategoryDetail = props => {
     };
 
     const breadcrumbItems = {items: [
-            {key: 1, name: t('dashboard'), link: global.final.dashboardPath},
-            {key: 1, name: t('categories'), link: global.final.dashboardPath+'/categories'},
+            {key: 1, name: t('dashboard'), link: global.variable.dashboardPath},
+            {key: 1, name: t('categories'), link: global.variable.dashboardPath+'/categories'},
             {key: 2, name: props.title},
         ]}
 
@@ -50,17 +63,20 @@ const CategoryDetail = props => {
 
             <Card className="dashboard-card" title={props.title}>
                 <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-                    <Form.Item name="note" label="Note" rules={[{ required: true }]}>
+                    <Form.Item name="name" label={t('name')} rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
+                    <Form.Item name="category" label={t('category')} rules={[{ required: true }]}>
                         <Select
-                            placeholder="Select a option and change input text above"
+                            placeholder={t('select_top_category')}
                             onChange={onGenderChange}
                             allowClear
                         >
-                            <Option value="male">male</Option>
-                            <Option value="female">female</Option>
+                            {
+                                categoryOptions.map((item) => {
+                                    return <Option key={item.slug} value={item.slug}>{item.name}</Option>
+                                })
+                            }
                         </Select>
                     </Form.Item>
 

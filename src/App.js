@@ -116,30 +116,33 @@ function App() {
 // Check if token has expired or not on first render
   useEffect(() => {
     let isMounted = true;
-    if (isMounted) {
-      if (state.loggedIn) {
+
+    if (state.loggedIn) {
         const service  = new LoginService()
         service.checkToken(state.user.token).then(data => {
-          if (data.status !== 'ok'){
-            // If token has expired check cookie for login.
-            if (cookies.email!==undefined && cookies.password!==undefined) {
-              service.getLoginAuthentication({email:cookies.email, password:cookies.password}).then(data => {
-                if (data.status === 'ok'){
-                  dispatch({ type: "login", data: data })
-                }
-              }).catch(e => {
-                console.log(e)
-              });
-            } else {
-              dispatch({ type: "logout" })
+          if (isMounted) {
+            if (data.status !== 'ok'){
+              // If token has expired check cookie for login.
+              if (cookies.email!==undefined && cookies.password!==undefined) {
+                service.getLoginAuthentication({email:cookies.email, password:cookies.password}).then(data => {
+                  if (data.status === 'ok'){
+                    dispatch({ type: "login", data: data })
+                  }
+                }).catch(e => {
+                  console.log(e)
+                });
+              } else {
+                dispatch({ type: "logout" })
+              }
             }
           }
         }).catch(e => {
           console.log(e)
         });
       }
-    }
+
     return () => { isMounted = false };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
@@ -147,64 +150,64 @@ function App() {
         <DispatchContext.Provider value={dispatch}>
           <CookiesProvider>
             <Router>
-            <Suspense fallback={window.location.href.includes(global.final.dashboardPath) ? <DashboardLoading /> : <LoadingPage/> }>
+            <Suspense fallback={window.location.href.includes(global.variable.dashboardPath) ? <DashboardLoading /> : <LoadingPage/> }>
               <Switch>
                 <Route exact path="/" component={HomePage}/>
-                <Route path={global.final.dashboardPath} exact>
+                <Route path={global.variable.dashboardPath} exact>
                   <Dashboard title={t('dashboard')} menuKey={'1'}/>
                 </Route>
-                <Route path={`${global.final.dashboardPath}/login`} >
+                <Route path={`${global.variable.dashboardPath}/login`} >
                   <Login title={t('login')} menuKey={'1'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/categories'}>
+                <Route path={global.variable.dashboardPath+'/categories'}>
                   <Categories title={t('categories')} menuKey={'2'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/category/add'}>
+                <Route path={global.variable.dashboardPath+'/category/add'}>
                   <CategoryDetail title={t('add_category')} menuKey={'2'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/category/edit/id/:id'}>
+                <Route path={global.variable.dashboardPath+'/category/edit/id/:id'}>
                   <CategoryDetail title={t('edit_category')}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/posts'}>
+                <Route path={global.variable.dashboardPath+'/posts'}>
                   <Posts title={t('posts')} menuKey={'3'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/posts/add'}>
+                <Route path={global.variable.dashboardPath+'/posts/add'}>
                   <PostDetail title={t('add_post')} menuKey={'3'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/posts/edit/id/:id'}>
+                <Route path={global.variable.dashboardPath+'/posts/edit/id/:id'}>
                   <PostDetail title={t('edit_post')} menuKey={'3'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/slider'}>
+                <Route path={global.variable.dashboardPath+'/slider'}>
                   <Slider title={t('slider')} menuKey={'4'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/slider/add'}>
+                <Route path={global.variable.dashboardPath+'/slider/add'}>
                   <SliderDetail title={t('add_slider')} menuKey={'4'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/slider/edit/id/:id'}>
+                <Route path={global.variable.dashboardPath+'/slider/edit/id/:id'}>
                   <SliderDetail title={t('edit_slider')} menuKey={'4'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/users'}>
+                <Route path={global.variable.dashboardPath+'/users'}>
                   <Users title={t('users')} menuKey={'5'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/user/add'}>
+                <Route path={global.variable.dashboardPath+'/user/add'}>
                   <UserDetails title={t('add_user')} menuKey={'5'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/slider/edit/id/:id'}>
+                <Route path={global.variable.dashboardPath+'/slider/edit/id/:id'}>
                   <UserDetails title={t('edit_user')} menuKey={'5'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/roles'}>
+                <Route path={global.variable.dashboardPath+'/roles'}>
                   <Roles title={t('roles')} menuKey={'6'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/role/add'}>
+                <Route path={global.variable.dashboardPath+'/role/add'}>
                   <RoleDetail title={t('add_role')} menuKey={'6'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/role/edit/id/:id'}>
+                <Route path={global.variable.dashboardPath+'/role/edit/id/:id'}>
                   <RoleDetail title={t('edit_role')} menuKey={'6'}/>
                 </Route>
-                <Route path={global.final.dashboardPath+'/setting'}>
+                <Route path={global.variable.dashboardPath+'/setting'}>
                   <Setting title={t('setting')} menuKey={'7'}/>
                 </Route>
-                <Route path={global.final.dashboardPath + '/*'}>
+                <Route path={global.variable.dashboardPath + '/*'}>
                   <DashboardLoading title={'...'}/>
                 </Route>
                 <Route component={NotFound} />

@@ -27,11 +27,11 @@ const Login = props => {
     const [cookies, setCookie] = useCookies(['email']);
 
     useEffect(() => {
-        document.title = `${t('login')} | ${global.final.appName}`
+        document.title = `${t('login')} | ${global.variable.appName}`
     }, [props.title, t])
 
     if (appState.loggedIn) {
-        history.push(global.final.dashboardPath);
+        history.push(global.variable.dashboardPath);
         return (<LoadingPage />)
     }
 
@@ -50,7 +50,7 @@ const Login = props => {
                     setWarning(getWarning(t('invalid_login_credentials')))
                 } else {
                     console.log(data.message)
-                    setWarning(getWarning(t('we_have_some_problems')))
+                    setWarning(getWarning(t('have_some_issues')))
                 }
             }
             return () => { isMounted = false };

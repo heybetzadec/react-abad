@@ -27,7 +27,7 @@ const DashboardPage = (props) => {
     }
 
     useEffect(() => {
-        document.title = `${props.title} | ${global.final.appName}`
+        document.title = `${props.title} | ${global.variable.appName}`
     }, [props.title])
 
 
@@ -40,7 +40,7 @@ const DashboardPage = (props) => {
 
 
     if (!appState.loggedIn) {
-        history.replace(`${global.final.dashboardPath}/login`);
+        history.replace(`${global.variable.dashboardPath}/login`);
         return (<LoadingPage />)
     }
 

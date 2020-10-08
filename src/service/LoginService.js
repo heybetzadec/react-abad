@@ -10,7 +10,7 @@ export default class LoginService {
                 "Content-Type": "application/json"
             }
         };
-        return axios.post(`${global.final.api}user/login`, requestBody, axiosConfig).then(res => res.data);
+        return axios.post(`${global.variable.api}user/login`, requestBody, axiosConfig).then(res => res.data);
     }
 
     checkToken(token){
@@ -21,7 +21,7 @@ export default class LoginService {
                 "Authorization": `Bearer ${token}`
             }
         };
-        return axios.post(`${global.final.api}user/login`, {}, axiosConfig).then(res => res.data);
+        return axios.post(`${global.variable.api}user/login`, {}, axiosConfig).then(res => res.data);
     }
 
 }

@@ -22,40 +22,40 @@ const LeftMenu = props => {
                 <div className="logo" />
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={[props.menuKey]}>
                     <Menu.Item key="1" icon={<HomeOutlined />}>
-                        <Link to={global.final.dashboardPath}>
+                        <Link to={global.variable.dashboardPath}>
                             Dashboard
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<UnorderedListOutlined />}>
-                        <Link to={global.final.dashboardPath + '/categories'}>
+                        <Link to={global.variable.dashboardPath + '/categories'}>
                             Categories
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<FormOutlined />}>
-                        <Link to={global.final.dashboardPath + '/posts'}>
+                        <Link to={global.variable.dashboardPath + '/posts'}>
                             Posts
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="4" icon={<FileImageOutlined />}>
-                        <Link to={global.final.dashboardPath + '/slider'}>
+                        <Link to={global.variable.dashboardPath + '/slider'}>
                             Slider
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="5" icon={<UserOutlined />}>
 
-                        <Link to={global.final.dashboardPath + '/users'}>
+                        <Link to={global.variable.dashboardPath + '/users'}>
                             Users
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="6" icon={<CheckSquareOutlined />}>
 
-                        <Link to={global.final.dashboardPath + '/roles'}>
+                        <Link to={global.variable.dashboardPath + '/roles'}>
                             Roles
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="7" icon={<SettingOutlined />}>
 
-                        <Link to={global.final.dashboardPath + '/setting'}>
+                        <Link to={global.variable.dashboardPath + '/setting'}>
                             Setting
                         </Link>
                     </Menu.Item>

@@ -6,7 +6,7 @@
   "password": "Password",
   "invalid_login_credentials": "Invalid login credentials.",
   "server_not_working" : "Server not working!",
-  "we_have_some_problems": "We have some problems!",
+  "have_some_issues": "Have some issues!",
   "input_email": "Please input your email!",
   "input_password": "Please input your password!",
   "users": "Users",
@@ -26,5 +26,8 @@
   "remember_me": "Remember me",
   "not_match": "Mail or password does not match.",
   "publish": "Publish",
-  "pending": "Pending"
+  "pending": "Pending",
+  "name": "Name",
+  "category": "Category",
+  "select_top_category": "Select a top category"
 }
