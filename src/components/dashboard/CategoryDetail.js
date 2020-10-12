@@ -61,8 +61,14 @@ const CategoryDetail = props => {
             {key: 1, name: t('categories'), link: global.variable.dashboardPath+'/categories'},
             {key: 2, name: props.title},
     ]}
+    // const changeName = (e) => {
+    //     setSlugName(Functions.slug(e.target.value))
+    // }
+
     const addSlug = () => {
-        setSlugName(Functions.slug(document.getElementById("control-hooks_name").value))
+        const slug = Functions.slug(document.getElementById("control-hooks_name").value)
+        setSlugName(slug)
+        // document.getElementById("control-hooks_slug").value = slug
     }
 
     return (
@@ -73,10 +79,10 @@ const CategoryDetail = props => {
                     <Form.Item name="name" label={t('name')} rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="slug" label={t('slug')} valuePropName="slug" rules={[{ required: true }]}>
+                    <Form.Item name="slug" label={t('slug')} rules={[{ required: true }]} valuePropName={slugName}>
                         <Input
-                            value={slugName}
                             onChange={e => setSlugName(e.target.value)}
+                            value={slugName}
                             addonAfter={<Button
                             style={{height:30}}
                             type="link"

@@ -62,7 +62,7 @@ function App() {
 
   const {t} = useTranslation();
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie] = useCookies(['email']);
+  const [cookies, setCookie, removeCookie] = useCookies(['email']);
 
   const initialState = {
     theme: 'light',
@@ -109,39 +109,38 @@ function App() {
       localStorage.removeItem("appUserName")
       localStorage.removeItem("appUserLogo")
       localStorage.removeItem("appLoggedIn")
+      removeCookie('email')
+      removeCookie('password')
     }
-  }, [state.loggedIn , state.user.email, state.user.name, state.user.logo, state.user.token])
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.loggedIn])
+      // , state.user.email, state.user.name, state.user.logo, state.user.token
 
 // Check if token has expired or not on first render
   useEffect(() => {
-    let isMounted = true;
-
-    if (state.loggedIn) {
+    if (!state.loggedIn) {
         const service  = new LoginService()
         service.checkToken(state.user.token).then(data => {
-          if (isMounted) {
-            if (data.status !== 'ok'){
-              // If token has expired check cookie for login.
-              if (cookies.email!==undefined && cookies.password!==undefined) {
-                service.getLoginAuthentication({email:cookies.email, password:cookies.password}).then(data => {
-                  if (data.status === 'ok'){
-                    dispatch({ type: "login", data: data })
-                  }
-                }).catch(e => {
-                  console.log(e)
-                });
-              } else {
-                dispatch({ type: "logout" })
-              }
+          console.log(data)
+          if (data.status !== 'ok'){
+            // If token has expired check cookie for login.
+            if (cookies.email!==undefined && cookies.password!==undefined) {
+              service.getLoginAuthentication({email:cookies.email, password:cookies.password}).then(data => {
+                if (data.status === 'ok'){
+                  dispatch({ type: "login", data: data })
+                }
+                console.log(data)
+              }).catch(e => {
+                console.log(e)
+              });
+            } else {
+              dispatch({ type: "logout" })
             }
           }
         }).catch(e => {
           console.log(e)
         });
       }
-
-    return () => { isMounted = false };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
