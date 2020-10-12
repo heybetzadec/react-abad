@@ -30,5 +30,8 @@
   "name": "Name",
   "category": "Category",
   "select_top_category": "Select a top category",
-  "slug": "Slug"
+  "slug": "Slug",
+  "keywords": "Keywords",
+  "separate_keywords_with_comma": "Separate keywords with the comma",
+  "description": "Description"
 }

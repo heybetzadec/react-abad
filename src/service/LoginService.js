@@ -21,7 +21,7 @@ export default class LoginService {
                 "Authorization": `Bearer ${token}`
             }
         };
-        return axios.post(`${global.variable.api}user/login`, {}, axiosConfig).then(res => res.data);
+        return axios.post(`${global.variable.api}secure/checkToken`, {}, axiosConfig).then(res => res.data);
     }
 
 }

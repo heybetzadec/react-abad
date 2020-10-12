@@ -43,7 +43,7 @@ const DashboardPage = (props) => {
         history.replace(`${global.variable.dashboardPath}/login`);
         return (<LoadingPage />)
     }
-
+    
     return (
         <>
             <Layout className="dashboard-container">
