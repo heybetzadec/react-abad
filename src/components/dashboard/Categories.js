@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Table, Tag, Space, PageHeader, Button, Alert} from 'antd';
+import {Table, Tag, Space, PageHeader, Button, Alert, Pagination} from 'antd';
 import DashboardPage from "./layout/DashboardPage";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import { useLocation } from "react-router-dom";
 import {
     PlusOutlined
 } from '@ant-design/icons';
@@ -14,12 +15,19 @@ const Categories = (props) => {
     const [data, setData] = useState([])
     const [dataIsLoad, setDataIsLoad] = useState('loading')
     const service = new CategoryService()
+    const location = useLocation();
+    const [successMessage, setSuccessMessage] = useState('')
+    const [currentPagination, setCurrentPagination] = useState(1)
+    const [totalPagination, setTotalPagination] = useState(1)
+    let per = 5
 
     useEffect(()=>{
         let isMounted = true;
-        service.getPaginationCategories(5, 'en').then(response => {
+        service.getPaginationCategories(per, 'en').then(response => {
             if (isMounted) {
+                console.log(response)
                 setData(response.categories.data)
+                setTotalPagination(response.categories.total)
                 setDataIsLoad('loaded')
             }
         }).catch(function (error) {
@@ -29,6 +37,20 @@ const Categories = (props) => {
         return () => { isMounted = false };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+
+    useEffect(() => {
+        if (location.state !== undefined) {
+            if (location.state.detail === 'add') {
+                setSuccessMessage(t('added_successfully'))
+            } else if (location.state.detail === 'update') {
+                setSuccessMessage(t('updated_successfully'))
+            }
+        }
+    }, [location]);
+
+    const handleClose = () => {
+        setSuccessMessage('')
+    };
 
     const columns = [
         {
@@ -77,15 +99,29 @@ const Categories = (props) => {
             {key: 2, name: t('categories')},
     ]}
 
+    const onChangePagination = (value) => {
+        setCurrentPagination(value)
+    }
+
     function loadDataTable () {
         if (dataIsLoad === 'loading') {
             return <LoadingTable/>
         } else if (dataIsLoad === 'loaded'){
-            return <Table
-                columns={columns}
-                pagination={{ position: [ 'bottomRight'] }}
-                dataSource={data}
-            />
+            return (
+                <>
+                    <Table
+                        columns={columns}
+                        pagination={{
+                            total: data.length,
+                            pageSize: data.length,
+                            hideOnSinglePage: true
+                        }}
+                        dataSource={data}
+                    />
+
+                    <Pagination style={{float:"right"}} current={currentPagination} total={totalPagination} pageSize={per} onChange={onChangePagination} />
+                </>
+            )
         } else {
             return <Alert message={t('have_some_issues')} type="error" showIcon  />
         }
@@ -102,6 +138,10 @@ const Categories = (props) => {
                     </Link>
                 ]}
             />
+
+            {successMessage !== '' ? (
+                <Alert message={successMessage} type="success" closable afterClose={handleClose} />
+            ) : null}
 
             {loadDataTable ()}
 

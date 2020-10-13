@@ -72,14 +72,15 @@ function App() {
       name: localStorage.getItem("appUserName"),
       logo: localStorage.getItem("appUserLogo")
     },
-    loggedIn: Boolean(localStorage.getItem("appLoggedIn"))
+    loggedIn: Boolean(localStorage.getItem("appLoggedIn")),
+    language: {id:1, name: 'Azərbaycan', code:'az'}
   }
 
   function ourReducer(draft, action) {
     switch (action.type) {
       case "login":
         draft.loggedIn = true
-        draft.user = action.data
+        draft.user = action.data.user
         return
       case "logout":
         draft.loggedIn = false

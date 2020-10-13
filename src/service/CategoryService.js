@@ -1,5 +1,6 @@
 import axios from 'axios'
 import '../util/use/variable'
+import {Functions} from "../util/use/Functions";
 
 export default class CategoryService {
 
@@ -12,7 +13,7 @@ export default class CategoryService {
         return axios.get(`${global.variable.api}category/top/all`).then(res => res.data);
     }
 
-    saveCategory(){
-        // Bearer token
+    saveCategory(token, data){
+        return axios.post(`${global.variable.secureApi}category/save`, data, Functions.tokenHeader(token))
     }
 }

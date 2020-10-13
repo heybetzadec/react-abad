@@ -1,14 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import DashboardPage from "./layout/DashboardPage";
-import {Button, Card, Input, Form, Select, Space, Divider} from "antd";
+import {Button, Card, Input, Form, Select, Space, Divider, Switch} from "antd";
 import {useTranslation} from "react-i18next";
 import CategoryService from "../../service/CategoryService";
 import '../../util/use/Functions'
+
+import StateContext from "../../util/context/StateContext";
 import {Functions} from "../../util/use/Functions";
-import {
-    ThunderboltOutlined
-} from '@ant-design/icons';
-import CategoryEditDetail from "./layout/CategoryEditDetail";
+import {useHistory} from "react-router-dom";
 
 const { Option } = Select;
 
@@ -26,11 +25,9 @@ const CategoryDetail = props => {
     const [form] = Form.useForm();
     const service = new CategoryService()
     const [categoryOptions, setCategoryOptions] = useState([])
-    const [slugName, setSlugName] = useState("")
-
-
-    const childRefAz = useRef();
-    const childRefEn = useRef();
+    const appState = useContext(StateContext)
+    const history = useHistory();
+    let publish = true;
 
     useEffect(()=>{
         let isMounted = true;
@@ -54,92 +51,91 @@ const CategoryDetail = props => {
                 return;
         }
     };
-
-    const onFinishAz = values => {
-        console.log(values);
-    };
-    const onFinishEn = values => {
-        console.log(values);
+    const onFinish = data => {
+        data.az.slug_name = Functions.slug(data.az.name)
+        data.en.slug_name = Functions.slug(data.en.name)
+        data.publish = publish
+        service.saveCategory(appState.user.token, data).then(response => {
+            if (response.data.status ==='ok'){
+                history.push({
+                    pathname:`${global.variable.dashboardPath}/categories`,
+                    state: { detail: 'add'}
+                });
+            } else {
+                console.log(response.data)
+            }
+        })
     };
     const onReset = () => {
         form.resetFields();
     };
+    const onChange = (checked) => {
+        publish = checked
+    }
     const breadcrumbItems = {items: [
             {key: 1, name: t('dashboard'), link: global.variable.dashboardPath},
             {key: 1, name: t('categories'), link: global.variable.dashboardPath+'/categories'},
             {key: 2, name: props.title},
-    ]}
-    // const changeName = (e) => {
-    //     setSlugName(Functions.slug(e.target.value))
-    // }
-
-
-
-    const addSlug = () => {
-        const slug = Functions.slug(document.getElementById("control-hooks_name").value)
-        setSlugName(slug)
-    }
-
-
-    const submitAll = () => {
-        childRefAz.current.doSubmit()
-        childRefEn.current.doSubmit()
-    }
+        ]}
 
     return (
         <DashboardPage title={props.title} menuKey={props.menuKey} breadcrumbItems={breadcrumbItems}>
 
-
-
             <Card className="dashboard-card" title={props.title}>
 
-                <CategoryEditDetail categoryOptions={categoryOptions} langId={1} languageName="English" onFinish={onFinishAz} ref={childRefAz}/>
-                <CategoryEditDetail categoryOptions={categoryOptions} langId={2} languageName="Azərbaycan" onFinish={onFinishEn} ref={childRefEn}/>
+                <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
 
-                <Button onClick={submitAll} type="primary">Primary Button</Button>
-
-                <Divider orientation="left" plain>
-                    Left Text
-                </Divider>
-                <Form {...layout} form={form} name="control-hooks" onFinish={onFinishEn}>
-                    <Form.Item name="name" label={t('name')} rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="slug" label={t('slug')} rules={[{ required: true }]} valuePropName={slugName}>
-                        <Input
-                            onChange={e => setSlugName(e.target.value)}
-                            value={slugName}
-                            addonAfter={<Button
-                            style={{height:30}}
-                            type="link"
-                            icon={<ThunderboltOutlined />}
-                            onClick={addSlug}
-                        />}/>
-                    </Form.Item>
-                    <Form.Item name="category" label={t('category')} rules={[{ required: true }]}>
+                    <Form.Item name="topCategorySlug" label={t('top_category')}>
                         <Select
-                            placeholder={t('select_top_category')}
                             onChange={onGenderChange}
                             allowClear
                         >
                             {
                                 categoryOptions.map((item) => {
-                                    return <Option key={item.slug} value={item.slug}>{item.translation.find(el => el.language_id === 1).name}</Option>
+                                    return <Option key={item.slug} value={item.slug}>{item.translation.find(el => el.language_id === appState.language.id).name}</Option>
                                 })
                             }
                         </Select>
                     </Form.Item>
 
-                    <Form.Item name="keyword" label={t('keywords')} help={t('separate_keywords_with_comma')}>
+                    <Form.Item label={t('publish')} style={{marginTop:5}}>
+                        <Switch defaultChecked onChange={onChange} />
+                    </Form.Item>
+
+                    <Divider orientation="left" plain>
+                        Azərbaycan
+                    </Divider>
+                    <Form.Item name={['az', 'name']} label={t('name')} rules={[{ required: true, message: t('please_input_name') }]}>
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item name={['az', 'keyword']} label={t('keywords')} help={t('separate_keywords_with_comma')}>
                         <Input.TextArea />
                     </Form.Item>
 
-                    <Form.Item name="description" label={t('description')} style={{marginTop:5}}>
+                    <Form.Item  name={['az', 'description']} label={t('description')} style={{marginTop:5}}>
+                        <Input.TextArea />
+                    </Form.Item>
+
+                    <Divider orientation="left" plain>
+                        English
+                    </Divider>
+
+                    <Form.Item name={['en', 'name']} label={t('name')} rules={[{ required: true, message: t('please_input_name') }]}>
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item name={['en', 'keyword']} label={t('keywords')} help={t('separate_keywords_with_comma')}>
+                        <Input.TextArea />
+                    </Form.Item>
+
+                    <Form.Item name={['en', 'description']} label={t('description')} style={{marginTop:5}}>
                         <Input.TextArea />
                     </Form.Item>
 
                     <Form.Item {...tailLayout} className="form_button_group">
                         <Space>
+
                             <Button htmlType="button" onClick={onReset}>
                                 Reset
                             </Button>

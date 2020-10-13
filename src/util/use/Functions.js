@@ -23,4 +23,14 @@ export const Functions = {
         return str.replace(/<[^>]*>?/gm, '');
     },
 
+    tokenHeader(token) {
+        return  {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        };
+    }
+
 };

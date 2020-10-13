@@ -41,29 +41,6 @@ const CategoryEditDetail = forwardRef((props, ref) => {
                 <Form.Item name="name" label={t('name')} rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="slug" label={t('slug')} rules={[{ required: true }]} valuePropName={slugName}>
-                    <Input
-                        onChange={e => setSlugName(e.target.value)}
-                        value={slugName}
-                        addonAfter={<Button
-                            style={{height:30}}
-                            type="link"
-                            icon={<ThunderboltOutlined />}
-                            onClick={addSlug}
-                        />}/>
-                </Form.Item>
-                <Form.Item name="category" label={t('category')} rules={[{ required: true }]}>
-                    <Select
-                        placeholder={t('select_top_category')}
-                        allowClear
-                    >
-                        {
-                            props.categoryOptions.map((item) => {
-                                return <Option key={item.slug} value={item.slug}>{item.translation.find(el => el.language_id === props.langId).name}</Option>
-                            })
-                        }
-                    </Select>
-                </Form.Item>
 
                 <Form.Item name="keyword" label={t('keywords')} help={t('separate_keywords_with_comma')}>
                     <Input.TextArea />
