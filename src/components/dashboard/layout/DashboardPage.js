@@ -27,7 +27,11 @@ const DashboardPage = (props) => {
     }
 
     useEffect(() => {
-        document.title = `${props.title} | ${global.variable.appName}`
+        if (props.title === undefined){
+            document.title = global.variable.appName
+        } else {
+            document.title = `${props.title} | ${global.variable.appName}`
+        }
     }, [props.title])
 
 

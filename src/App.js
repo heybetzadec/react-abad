@@ -165,7 +165,7 @@ function App() {
                 <Route path={global.variable.dashboardPath+'/category/add'}>
                   <CategoryDetail title={t('add_category')} menuKey={'2'}/>
                 </Route>
-                <Route path={global.variable.dashboardPath+'/category/edit/id/:id'}>
+                <Route path={global.variable.dashboardPath+'/category/edit/key/:key'}>
                   <CategoryDetail title={t('edit_category')}/>
                 </Route>
                 <Route path={global.variable.dashboardPath+'/posts'}>

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Table, Tag, Space, PageHeader, Button, Alert, Pagination} from 'antd';
+import React, {useContext, useEffect, useState} from 'react';
+import {Table, Tag, Space, PageHeader, Button, Alert, Pagination, Popconfirm} from 'antd';
 import DashboardPage from "./layout/DashboardPage";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
@@ -9,24 +9,27 @@ import {
 } from '@ant-design/icons';
 import CategoryService from "../../service/CategoryService";
 import LoadingTable from "./layout/LoadingTable";
+import StateContext from "../../util/context/StateContext";
 
 const Categories = (props) => {
     const {t} = useTranslation();
-    const [data, setData] = useState([])
+    const [dataSource, setDataSource] = useState([])
     const [dataIsLoad, setDataIsLoad] = useState('loading')
     const service = new CategoryService()
     const location = useLocation();
+    const [warningMessage, setWarningMessage] = useState('')
     const [successMessage, setSuccessMessage] = useState('')
     const [currentPagination, setCurrentPagination] = useState(1)
     const [totalPagination, setTotalPagination] = useState(1)
-    let per = 5
+    const appState = useContext(StateContext)
+    let per = 8
+
 
     useEffect(()=>{
         let isMounted = true;
-        service.getPaginationCategories(per, 'en').then(response => {
+        service.getPaginationCategories(per, 'en', currentPagination).then(response => {
             if (isMounted) {
-                console.log(response)
-                setData(response.categories.data)
+                setDataSource(response.categories.data)
                 setTotalPagination(response.categories.total)
                 setDataIsLoad('loaded')
             }
@@ -36,7 +39,7 @@ const Categories = (props) => {
         });
         return () => { isMounted = false };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[currentPagination])
 
     useEffect(() => {
         if (location.state !== undefined) {
@@ -46,11 +49,9 @@ const Categories = (props) => {
                 setSuccessMessage(t('updated_successfully'))
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
-    const handleClose = () => {
-        setSuccessMessage('')
-    };
 
     const columns = [
         {
@@ -62,8 +63,8 @@ const Categories = (props) => {
         },
         {
             title: 'Slug',
-            dataIndex: 'slug_name',
-            key: 'slug_name',
+            dataIndex: 'key_name',
+            key: 'key_name',
         },
         {
             title: 'Top category',
@@ -85,14 +86,36 @@ const Categories = (props) => {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <Link to={"#"}>Edit</Link>
-                    <Link to={"#"}>Delete</Link>
+                    <Link to={global.variable.dashboardPath+'/category/edit/key/'+record.key}>Edit</Link>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+                        <Link to="#">Delete</Link>
+                    </Popconfirm>
                 </Space>
             ),
         },
     ];
 
+    const handleDelete = key => {
+        service.removeCategory(appState.user.token, key).then(response => {
+            if (response.data.status ==='ok'){
+                setDataSource(dataSource.filter(item => item.key !== key))
+                setSuccessMessage(t('deleted_successfully'))
+            } else if (response.data.status === 'unsuccessful'){
+                setWarningMessage(t('its_failed'))
+            } else {
+                setWarningMessage(t('have_some_issues'))
+                console.log(response.data)
+            }
+        })
+    };
 
+    const handleCloseWarning = () => {
+        setWarningMessage('')
+    };
+
+    const handleCloseSuccess = () => {
+        setSuccessMessage('')
+    };
 
     const breadcrumbItems = {items: [
             {key: 1, name: t('dashboard'), link: global.variable.dashboardPath},
@@ -110,16 +133,17 @@ const Categories = (props) => {
             return (
                 <>
                     <Table
+                        size="middle"
                         columns={columns}
                         pagination={{
-                            total: data.length,
-                            pageSize: data.length,
+                            total: dataSource.length,
+                            pageSize: dataSource.length,
                             hideOnSinglePage: true
                         }}
-                        dataSource={data}
+                        dataSource={dataSource}
                     />
 
-                    <Pagination style={{float:"right"}} current={currentPagination} total={totalPagination} pageSize={per} onChange={onChangePagination} />
+                    <Pagination style={{float:"right", marginTop:20}} current={currentPagination} total={totalPagination} pageSize={per} onChange={onChangePagination} />
                 </>
             )
         } else {
@@ -139,8 +163,13 @@ const Categories = (props) => {
                 ]}
             />
 
+
+            {warningMessage !== '' ? (
+                <Alert message={warningMessage} type="warning" closable afterClose={handleCloseWarning} />
+            ) : null}
+
             {successMessage !== '' ? (
-                <Alert message={successMessage} type="success" closable afterClose={handleClose} />
+                <Alert message={successMessage} type="success" closable afterClose={handleCloseSuccess} />
             ) : null}
 
             {loadDataTable ()}

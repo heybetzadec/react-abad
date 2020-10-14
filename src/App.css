@@ -96,11 +96,9 @@ body html{
   background-size: contain;
   background-repeat: no-repeat;
 }
-
 .site-layout .site-layout-background {
   background: #fff;
 }
-
 .ant-layout-header .trigger {
   font-size: 18px;
   line-height: 64px;
@@ -108,7 +106,9 @@ body html{
   cursor: pointer;
   transition: color 0.3s;
 }
-
 .ant-input-group-addon{
   padding: 0!important;
+}
+.ant-layout-content.site-layout-background{
+  display: table;
 }

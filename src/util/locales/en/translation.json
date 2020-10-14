@@ -34,8 +34,9 @@
   "keywords": "Keywords",
   "separate_keywords_with_comma": "Separate keywords with the comma",
   "description": "Description",
-  "please_input_name": "Please input name!",
-  "please_input_slug": "Please input slug!",
-  "added_successfully": "Added successfully",
-  "updated_successfully": "Updated successfully"
+  "please_input": "Please input!",
+  "added_successfully": "Added successfully.",
+  "updated_successfully": "Updated successfully.",
+  "deleted_successfully": "Deleted successfully.",
+  "its_failed": "It's failed"
 }
