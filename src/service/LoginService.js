@@ -3,7 +3,7 @@ import '../util/use/variable'
 
 export default class LoginService {
 
-    getLoginAuthentication(requestBody){
+    getLoginAuthentication(requestBody) {
         let axiosConfig = {
             headers: {
                 "Accept": "application/json",
@@ -13,7 +13,7 @@ export default class LoginService {
         return axios.post(`${global.variable.api}user/login`, requestBody, axiosConfig).then(res => res.data);
     }
 
-    checkToken(token){
+    checkToken(token) {
         let axiosConfig = {
             headers: {
                 "Accept": "application/json",

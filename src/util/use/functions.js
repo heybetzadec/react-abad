@@ -1,4 +1,4 @@
-export const Functions = {
+export const functions = {
 
     slug(text) {
         let search = [

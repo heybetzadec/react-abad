@@ -38,5 +38,14 @@
   "added_successfully": "Added successfully.",
   "updated_successfully": "Updated successfully.",
   "deleted_successfully": "Deleted successfully.",
-  "its_failed": "It's failed"
+  "its_failed": "It's failed. Try again.",
+  "sure_to_delete": "Sure to delete?",
+  "action": "Action",
+  "tags": "Tags",
+  "new_tag": "New Tag",
+  "jpg_png_error": "You can only upload JPG/PNG file!",
+  "mp_error": "Image must smaller than 2MB!",
+  "image": "Image",
+  "language": "Language",
+  "content": "Content"
 }

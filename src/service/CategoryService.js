@@ -1,6 +1,6 @@
 import axios from 'axios'
 import '../util/use/variable'
-import {Functions} from "../util/use/Functions";
+import {functions} from "../util/use/functions";
 
 export default class CategoryService {
 
@@ -18,14 +18,14 @@ export default class CategoryService {
     }
 
     saveCategory(token, data){
-        return axios.post(`${global.variable.secureApi}category/save`, data, Functions.tokenHeader(token))
+        return axios.post(`${global.variable.secureApi}category/save`, data, functions.tokenHeader(token))
     }
 
     updateCategory(token, data, key){
-        return axios.post(`${global.variable.secureApi}category/edit/key/${key}`, data, Functions.tokenHeader(token))
+        return axios.post(`${global.variable.secureApi}category/edit/key/${key}`, data, functions.tokenHeader(token))
     }
 
     removeCategory(token, key) {
-        return axios.post(`${global.variable.secureApi}category/remove/key/${key}`, {}, Functions.tokenHeader(token))
+        return axios.post(`${global.variable.secureApi}category/remove/key/${key}`, {}, functions.tokenHeader(token))
     }
 }

@@ -109,6 +109,11 @@ body html{
 .ant-input-group-addon{
   padding: 0!important;
 }
-.ant-layout-content.site-layout-background{
-  display: table;
+/*.ant-layout-content.site-layout-background{*/
+/*  display: table;*/
+/*}*/
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
 }

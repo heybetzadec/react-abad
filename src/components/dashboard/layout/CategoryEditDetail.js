@@ -2,7 +2,7 @@ import React, {useState, useImperativeHandle, forwardRef} from 'react';
 import {Button, Divider, Form, Input, Select, Space} from "antd";
 import {ThunderboltOutlined} from "@ant-design/icons";
 import {useTranslation} from "react-i18next";
-import {Functions} from "../../../util/use/Functions";
+import {Functions} from "../../../util/use/functions";
 
 const layout = {
     labelCol: { span: 4 },

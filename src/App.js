@@ -171,10 +171,10 @@ function App() {
                 <Route path={global.variable.dashboardPath+'/posts'}>
                   <Posts title={t('posts')} menuKey={'3'}/>
                 </Route>
-                <Route path={global.variable.dashboardPath+'/posts/add'}>
+                <Route path={global.variable.dashboardPath+'/post/add'}>
                   <PostDetail title={t('add_post')} menuKey={'3'}/>
                 </Route>
-                <Route path={global.variable.dashboardPath+'/posts/edit/id/:id'}>
+                <Route path={global.variable.dashboardPath+'/post/edit/id/:id'}>
                   <PostDetail title={t('edit_post')} menuKey={'3'}/>
                 </Route>
                 <Route path={global.variable.dashboardPath+'/slider'}>
