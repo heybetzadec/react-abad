@@ -180,12 +180,12 @@ const CategoryDetail = props => {
                             <Input/>
                         </Form.Item>
 
-                        <Form.Item name={['az', 'keyword']} label={t('keywords')}
+                        <Form.Item name={['az', 'meta_keyword']} label={t('meta_keywords')}
                                    help={t('separate_keywords_with_comma')}>
                             <Input.TextArea/>
                         </Form.Item>
 
-                        <Form.Item name={['az', 'description']} label={t('description')} style={{marginTop: 5}}>
+                        <Form.Item name={['az', 'meta_description']} label={t('meta_description')} style={{marginTop: 5}}>
                             <Input.TextArea/>
                         </Form.Item>
 
@@ -203,12 +203,12 @@ const CategoryDetail = props => {
                             <Input/>
                         </Form.Item>
 
-                        <Form.Item name={['en', 'keyword']} label={t('keywords')}
+                        <Form.Item name={['en', 'meta_keyword']} label={t('meta_keywords')}
                                    help={t('separate_keywords_with_comma')}>
                             <Input.TextArea/>
                         </Form.Item>
 
-                        <Form.Item name={['en', 'description']} label={t('description')} style={{marginTop: 5}}>
+                        <Form.Item name={['en', 'meta_description']} label={t('meta_description')} style={{marginTop: 5}}>
                             <Input.TextArea/>
                         </Form.Item>
 

@@ -9,25 +9,15 @@ import {
     UnorderedListOutlined,
     UserOutlined
 } from "@ant-design/icons";
+import {useTranslation} from "react-i18next";
 
 const { Sider } = Layout;
 
 
 
 const LeftMenu = props => {
-    // const [inputProps, setInputProps] = useEffect({
-    //     breakpoint: 'lg',
-    //     collapsedWidth: 0
-    // })
+    const {t} = useTranslation();
     const size = useWindowSize();
-
-
-    // useEffect(()=>{
-    //     if (size.width < 991)
-    //         setInputProps({})
-    // }, [size])
-
-
 
     return (
         <>
@@ -38,49 +28,41 @@ const LeftMenu = props => {
                 collapsed={props.collapsed}
                 {...(size.width < 991 ? {breakpoint: 'lg', collapsedWidth:0} : {})}
             >
-            {/*<Sider*/}
-            {/*    breakpoint="lg"*/}
-            {/*    collapsedWidth="0"*/}
-            {/*    {...inputProps}*/}
-            {/*>*/}
                 <div className="logo" />
                 <Menu  theme="dark" mode="inline" defaultSelectedKeys={[props.menuKey]}>
                     <Menu.Item key="1" icon={<HomeOutlined />}>
                         <Link to={global.variable.dashboardPath}>
-                            Dashboard
+                            {t('dashboard')}
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<UnorderedListOutlined />}>
                         <Link to={global.variable.dashboardPath + '/categories'}>
-                            Categories
+                            {t('categories')}
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<FormOutlined />}>
                         <Link to={global.variable.dashboardPath + '/posts'}>
-                            Posts
+                            {t('posts')}
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="4" icon={<FileImageOutlined />}>
                         <Link to={global.variable.dashboardPath + '/slider'}>
-                            Slider
+                            {t('slider')}
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="5" icon={<UserOutlined />}>
-
                         <Link to={global.variable.dashboardPath + '/users'}>
-                            Users
+                            {t('users')}
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="6" icon={<CheckSquareOutlined />}>
-
                         <Link to={global.variable.dashboardPath + '/roles'}>
-                            Roles
+                            {t('roles')}
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="7" icon={<SettingOutlined />}>
-
                         <Link to={global.variable.dashboardPath + '/setting'}>
-                            Setting
+                            {t('setting')}
                         </Link>
                     </Menu.Item>
                 </Menu>
@@ -90,8 +72,6 @@ const LeftMenu = props => {
 };
 
 function useWindowSize() {
-    // Initialize state with undefined width/height so server and client renders match
-    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
     const [windowSize, setWindowSize] = useState({
         width: undefined,
         height: undefined,

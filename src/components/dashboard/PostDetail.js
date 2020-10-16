@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import DashboardPage from "./layout/DashboardPage";
-import {Button, Card, Input, Form, Select, Space, Divider, Switch, Alert, Tag, Tooltip, Upload} from "antd";
+import {Button, Card, Input, Form, Select, Space, Switch, Alert, Tag, Tooltip, Upload} from "antd";
 import {useTranslation} from "react-i18next";
 import CategoryService from "../../service/CategoryService";
 import '../../util/use/style'
@@ -14,8 +14,12 @@ import {PlusOutlined, LoadingOutlined} from "@ant-design/icons";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-
 const {Option} = Select;
+
+const tagStyle = {
+    marginTop: 5,
+    marginBottom: 5,
+};
 
 const PostDetail = props => {
     let {key} = useParams()
@@ -53,8 +57,8 @@ const PostDetail = props => {
         let isMounted = true;
         if (key === undefined) {
             setData({
-                az: {name: "", keyword: "", description: "", key_name: ""},
-                en: {name: "", keyword: "", description: "", key_name: ""},
+                az: {name: "", keyword: "", meta_description: "", key_name: ""},
+                en: {name: "", keyword: "", meta_description: "", key_name: ""},
                 publish: true,
                 topCategoryKey: undefined
             })
@@ -80,13 +84,13 @@ const PostDetail = props => {
                                 az: {
                                     name: aze.name,
                                     keyword: aze.keyword,
-                                    description: aze.description,
+                                    meta_description: aze.meta_description,
                                     key_name: aze.key_name
                                 },
                                 en: {
                                     name: eng.name,
                                     keyword: eng.keyword,
-                                    description: eng.description,
+                                    meta_description: eng.meta_description,
                                     key_name: eng.key_name
                                 },
                                 publish: true,
@@ -293,7 +297,7 @@ const PostDetail = props => {
                             </Upload>
                         </Form.Item>
 
-                        <Form.Item name={['az', 'keyword']} label={t('tags')}>
+                        <Form.Item name={['az', 'meta_keyword']} label={t('tags')}>
                             {
                                 <>
                                     {tags.map((tag, index) => {
@@ -315,7 +319,7 @@ const PostDetail = props => {
 
                                         const tagElem = (
                                             <Tag
-                                                style={{marginTop:10}}
+                                                style={tagStyle}
                                                 className="edit-tag"
                                                 key={tag}
                                                 closable={true}
@@ -346,7 +350,6 @@ const PostDetail = props => {
                                         <Input
                                             style={{
                                                 width:100,
-                                                marginTop:10
                                             }}
                                             type="text"
                                             size="small"
@@ -359,7 +362,7 @@ const PostDetail = props => {
                                         />
                                     )}
                                     {!inputVisible && (
-                                        <Tag style={{marginTop:10}} className="site-tag-plus" onClick={showInput}>
+                                        <Tag style={tagStyle} className="site-tag-plus" onClick={showInput}>
                                             <PlusOutlined /> {t('new_tag')}
                                         </Tag>
                                     )}
@@ -367,12 +370,12 @@ const PostDetail = props => {
                             }
                         </Form.Item>
 
-                        <Form.Item name={['az', 'keyword']} label={t('keywords')}
+                        <Form.Item name={['az', 'meta_keyword']} label={t('meta_keywords')}
                                    help={t('separate_keywords_with_comma')}>
                             <Input.TextArea/>
                         </Form.Item>
 
-                        <Form.Item name={['az', 'description']} label={t('description')} style={{marginTop: 5}}>
+                        <Form.Item name={['az', 'meta_description']} label={t('meta_description')} style={{marginTop: 5}}>
                             <Input.TextArea/>
                         </Form.Item>
 
@@ -383,25 +386,30 @@ const PostDetail = props => {
                         <CKEditor
                             editor={ ClassicEditor }
                             data="<p>Hello from CKEditor 5!</p>"
-                            onInit={ editor => {
-                                // You can store the "editor" and use when it is needed.
-                                console.log( 'Editor is ready to use!', editor );
-                            } }
-                            onChange={ ( event, editor ) => {
-                                const data = editor.getData();
-                                console.log( { event, editor, data } );
-                            } }
-                            onBlur={ ( event, editor ) => {
-                                console.log( 'Blur.', editor );
-                            } }
-                            onFocus={ ( event, editor ) => {
-                                console.log( 'Focus.', editor );
-                            } }
+                            style={{height:500}}
+                            config={{ckfinder: {
+                                    // Upload the images to the server using the CKFinder QuickUpload command
+                                    // You have to change this address to your server that has the ckfinder php connector
+                                    uploadUrl: 'https://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json'
+                                }}}
+                            // onInit={ editor => {
+                            //     // You can store the "editor" and use when it is needed.
+                            //     // console.log( 'Editor is ready to use!', editor );
+                            // } }
+                            // onChange={ ( event, editor ) => {
+                            //     const data = editor.getData();
+                            //     console.log( { event, editor, data } );
+                            // } }
+                            // onBlur={ ( event, editor ) => {
+                            //     console.log( 'Blur.', editor );
+                            // } }
+                            // onFocus={ ( event, editor ) => {
+                            //     console.log( 'Focus.', editor );
+                            // } }
                         />
 
                         <Form.Item {...global.style.formTailLayout} className="form_button_group">
-                            <Space>
-
+                            <Space style={{marginTop:30}}>
                                 <Button htmlType="button" onClick={handleReset}>
                                     Reset
                                 </Button>

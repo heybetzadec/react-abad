@@ -117,3 +117,7 @@ body html{
     background-color: lightblue;
   }
 }
+
+.ck-editor__editable {
+  min-height: 500px;
+}
